@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>RPG Entrance</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<div class="game-screen" tabindex="0">
+
+
+    <!-- ========================================
+         背景・キャラクター・枠
+         すべて同じ表示領域
+    ======================================== -->
+
+    <div id="visualArea">
+
+
+        <!-- 背景 -->
+
+        <div class="background"></div>
+
+
+        <!-- キャラクター -->
+
+        <div id="menuOverlayImage">
+
+            <img
+                src="images/menu-character.png"
+                alt=""
+            >
+
+        </div>
+
+
+        <!-- 枠 -->
+
+        <div id="frameOverlay">
+
+            <img
+                src="images/frame.png"
+                alt=""
+            >
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================
+         モード情報
+    ======================================== -->
+
+    <div id="modeInfo" style="display:none;">
+
+        <div class="mode-backg">
+            <!-- 後で背景画像を入れる場所 -->
+        </div>
+
+    </div>
+
+
+    <!-- 現在のモードアイコン -->
+
+    <div id="currentModeIcon">
+
+        <img
+            id="currentModeImage"
+            src=""
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- ========================================
+         モード選択画像
+    ======================================== -->
+
+    <div class="mode-image">
+
+
+        <!-- 入門版 -->
+
+        <div class="mode-card">
+
+            <img
+                id="beginnerIcon"
+                src="images/for_beginner_book.png"
+                alt="入門版"
+            >
+
+            <div class="mode-text beginner-text">
+
+                <strong>入門版</strong>
+
+                <br>
+                <br>
+
+                <span class="small-text">
+                    自由度:⭐︎
+                </span>
+
+                <br>
+
+                <span class="small-text">
+                    制作時間:
+                </span>
+
+                <br>
+
+                <span class="small-text">
+                    短
+                </span>
+
+                <br>
+
+            </div>
+
+        </div>
+
+
+        <!-- 応用版 -->
+
+        <div class="mode-card">
+
+            <img
+                id="advancedIcon"
+                src="images/for_difficult_book.png"
+                alt="応用版"
+            >
+
+            <div class="mode-text advanced-text">
+
+                <strong>応用版</strong>
+
+                <br>
+                <br>
+
+                <span class="small-text">
+                    自由度:⭐︎⭐︎⭐︎
+                </span>
+
+                <br>
+
+                <span class="small-text">
+                    制作時間:
+                </span>
+
+                <br>
+
+                <span class="small-text">
+                    　中〜長
+                </span>
+
+                <br>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================
+         コマンドウィンドウ
+    ======================================== -->
+
+    <div class="command-window">
+
+
+        <!-- スタートメッセージ -->
+
+        <div id="startMessage">
+
+            <div class="start-text">
+                ようこそ。
+            </div>
+
+
+            <div class="start-item">
+
+                <span class="cursor">
+                    ▶
+                </span>
+
+                <span class="label">
+                    なんか決めてないけど文章
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- モード選択 -->
+
+        <div id="modeSelect" style="display:none;">
+
+            <h2>
+                モード選択
+            </h2>
+
+        </div>
+
+
+        <!-- モードメニュー -->
+
+        <ul class="menu" id="modeMenu">
+
+            <li data-mode="beginner">
+                入門版
+            </li>
+
+            <li data-mode="advanced">
+                応用版
+            </li>
+
+        </ul>
+
+
+        <!-- メインメニュー -->
+
+        <ul class="menu" id="mainMenu">
+
+            <li data-page="try">
+                ゲームスタート
+            </li>
+
+            <li data-page="pictureScroll">
+                制作順序の絵まき
+            </li>
+
+            <li data-page="introduction">
+                戻る
+            </li>
+
+        </ul>
+
+
+        <!-- ページ内容 -->
+
+        <div id="pageContent"></div>
+
+
+    </div>
+
+
+</div>
+<script src="js/pages.js"></script>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
