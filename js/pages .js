@@ -1,10 +1,10 @@
-const pages = {
+window.pages = {
   
   try: {
     
     title: "わたしたちの経験から",
     
-    text: "熱量などを書くページです。"
+    text: "熱量などを書くページです."
     
   },
   
