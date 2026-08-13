@@ -878,7 +878,7 @@ min-height: 200px;
 @media (max-width: 600px) {
   
   #menuOverlayImage img {
-    width: 110％;
+    width: 110%;
     height: 110%;
     margin: auto;
   }
