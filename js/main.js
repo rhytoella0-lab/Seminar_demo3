@@ -3,6 +3,9 @@ import * as pdfjsLib from
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.54/pdf.worker.min.mjs";
+
+const pages = window.pages;
+
 const menuItems = document.querySelectorAll("#mainMenu li");
 const commandWindow =
   document.querySelector(".command-window");
