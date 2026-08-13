@@ -1,0 +1,1252 @@
+/* 全体 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  
+  margin: 0;
+  
+  background: #000;
+  
+  overflow: hidden;
+  
+  font-family:
+    "PixelMplus10",
+    "ＭＳ ゴシック",
+    monospace;
+  
+}
+
+
+
+/* ゲーム画面 */
+.game-screen {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  
+  padding-bottom: 20px;
+  
+  outline: none;
+}
+
+/* 背景 */
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  background-image: url("../images/background.png");
+  
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  z-index: 0;
+}
+
+/* メインメニュー画面 */
+.game-screen.main-menu-active .background {
+  background-image: url("../images/main-menu-bg.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+}
+/* コマンドウィンドウ */
+.command-window {
+  
+  position: relative;
+  
+  z-index: 3;
+  
+  width: 90%;
+  
+  max-width: 900px;
+  
+  margin-bottom: clamp(20px, 12vh, 60px);
+  
+  padding: 40px 50px;
+  
+  color: white;
+  
+  image-rendering: pixelated;
+  
+  isolation: isolate;
+}
+
+.game-screen.mode-select-active .command-window {
+  display: none;
+}
+
+/* =====================
+   外側ドット枠
+===================== */
+
+
+.command-window::before {
+
+
+  content:"";
+
+
+  position:absolute;
+
+
+  inset:0;
+
+
+  background:white;
+
+
+  z-index:-1;
+
+
+
+  clip-path:polygon(
+
+    24px 0,
+    calc(100% - 24px) 0,
+
+
+    calc(100% - 24px) 8px,
+    calc(100% - 16px) 8px,
+    calc(100% - 16px) 16px,
+    100% 16px,
+
+
+    100% calc(100% - 16px),
+    calc(100% - 16px) calc(100% - 16px),
+    calc(100% - 16px) calc(100% - 8px),
+    calc(100% - 24px) calc(100% - 8px),
+
+
+    calc(100% - 24px) 100%,
+
+
+    24px 100%,
+
+
+    24px calc(100% - 8px),
+    16px calc(100% - 8px),
+    16px calc(100% - 16px),
+    0 calc(100% - 16px),
+
+
+    0 16px,
+
+    16px 16px,
+
+    16px 8px,
+
+    24px 8px
+
+  );
+
+
+}
+
+
+
+/* =====================
+   内側黒部分
+===================== */
+
+
+.command-window::after {
+
+
+  content:"";
+
+
+  position:absolute;
+
+
+  inset:8px;
+
+
+  background:#000;
+
+
+  z-index:-1;
+
+
+
+  clip-path:polygon(
+
+    16px 0,
+    calc(100% - 16px) 0,
+
+
+    calc(100% - 16px) 8px,
+    calc(100% - 8px) 8px,
+    calc(100% - 8px) 16px,
+    100% 16px,
+
+
+    100% calc(100% - 16px),
+    calc(100% - 8px) calc(100% - 16px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 16px) calc(100% - 8px),
+
+
+    calc(100% - 16px) 100%,
+
+
+    16px 100%,
+
+
+    16px calc(100% - 8px),
+    8px calc(100% - 8px),
+    8px calc(100% - 16px),
+    0 calc(100% - 16px),
+
+
+    0 16px,
+
+    8px 16px,
+
+    8px 8px,
+
+    16px 8px
+
+  );
+
+
+}
+
+/* 外側ドット枠 */
+
+/* ドット角 */
+
+/* メニュー */
+.menu {
+  
+  list-style: none;
+  
+  padding: 0;
+  
+  margin: 0;
+  
+  color: white;
+  
+  font-size: clamp(22px, 3.2vw, 34px);
+  
+  line-height: 1.8;
+  
+  opacity: 0;
+  
+  display: none;
+  
+}
+/* 選択肢 */
+
+.menu li {
+  
+  cursor: pointer;
+  
+  position: relative;
+  
+  padding-left: 45px;
+  
+  transition: transform 0.1s;
+  
+  touch-action: none;
+  
+}
+
+/* カーソル */
+
+.menu li::before {
+  
+  
+  content: "▶";
+  
+  
+  position: absolute;
+  
+  
+  left: 0;
+  
+  
+  opacity: 0;
+  
+  
+}
+
+
+
+/* 選択中 */
+
+.menu li.selected::before {
+  
+  opacity: 1;
+  
+  animation: cursorBlink 0.8s infinite;
+  
+}
+
+
+@keyframes cursorBlink {
+  
+  0% {
+    opacity: 1;
+  }
+  
+  50% {
+    opacity: 0.2;
+  }
+  
+  100% {
+    opacity: 1;
+  }
+  
+}
+
+
+
+/* ホバー */
+
+/*.menu li:hover {
+  color: #ffff80;
+}
+*/
+.menu li.selected {
+  color: #ffff80;
+}
+
+
+/* スマホ調整 */
+
+@media(max-width:600px) {
+  
+  .menu li {
+    
+    padding-left: 35px;
+    
+  }
+  
+}
+/* 決定時の押し込み演出 */
+
+.menu li.pressed {
+
+  transform: scale(0.9) translateX(5px);
+
+  transform-origin: left center;
+
+}
+
+/* 最初はメニューを見えなくする */
+
+#mainMenu {
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 0.8s;
+
+}
+
+
+/* 表示するとき */
+
+#mainMenu.show {
+  
+  opacity: 1;
+  
+  pointer-events: auto;
+  
+  display: block;
+  
+}/* スタートメッセージ */
+
+#startMessage {
+
+  color: white;
+
+  font-size: clamp(22px, 3.2vw, 34px);
+
+  line-height: 1.8;
+
+  cursor: pointer;
+
+}
+/* =====================
+   スタート文字
+===================== */
+
+.start-button {
+  
+  color: white;
+  
+  cursor: pointer;
+  
+  transition: 0.1s;
+  
+}
+
+
+
+/* マウスを乗せた時 */
+
+.start-button:hover {
+  
+  color: #ffff80;
+  
+}
+
+
+
+/* 押した瞬間 */
+
+.start-button.pressed {
+  
+  transform: scale(0.85);
+  
+  color: #ffff80;
+  
+}
+/* =====================
+   スタート項目
+===================== */
+
+.start-item {
+  
+  color: white;
+  
+  cursor: pointer;
+  
+  font-size: clamp(22px, 3.2vw, 34px);
+  
+  display: flex;
+  
+  align-items: center;
+  
+  gap: 0px;
+  
+}
+
+.start-item:hover {
+  
+  color: #ffff80;
+  
+}
+
+.cursor {
+  
+  animation: cursorBlink .8s infinite;
+  
+}
+
+.start-item.pressed {
+  
+  color: #ffff80;
+  
+}
+
+.start-item.pressed .label {
+  
+  transform: scale(.9);
+  
+}
+
+.label {
+  
+  display: inline-block;
+  
+  transition: transform .1s;
+  
+}
+/*
+#pageContent {
+  
+  width: 100%;
+  
+  min-height: 250px;
+  
+}
+*/
+#pageContent.active {
+  
+min-height: 200px;
+  
+}
+.hidden {
+  display: none;
+}
+/* =====================
+   モード選択画面
+===================== */
+
+#modeSelect {
+  
+  display: none;
+  
+}
+
+
+/* モード画像 */
+
+
+/* モード説明 */
+
+.mode-description {
+  
+  color: white;
+  
+  margin-bottom: 20px;
+  
+}
+
+
+.mode-description h2 {
+  
+  margin: 0 0 10px;
+  
+  font-size: clamp(24px, 3vw, 36px);
+  
+}
+
+
+.mode-description p {
+  
+  margin: 0;
+  
+  font-size: clamp(18px, 2.5vw, 28px);
+  
+}
+#modeInfo {
+  
+  position: absolute;
+  
+  top: 50px;
+  
+  left: 50%;
+  
+  transform: translateX(-50%);
+  
+  width: 90%;
+  
+  max-width: 900px;
+  
+  color: white;
+  
+  text-align: center;
+  
+  z-index: 1;
+}
+.mode-image {
+  
+  position: fixed;
+  
+  left: 50%;
+  top: 50%;
+  
+  transform: translate(-50%, -50%);
+  
+  flex-direction: row;
+  
+  justify-content: center;
+  align-items: center;
+  
+  gap: 0px;
+  
+  width: 82vw;
+  
+  z-index: 9999;
+  
+  overflow: visible;
+  
+}
+
+.mode-image img {
+  
+  width: clamp(240px, 45vw, 700px);
+  
+  height: auto;
+  
+  object-fit: contain;
+  
+  display: block;
+  
+  image-rendering: pixelated;
+  
+  transition: transform 0.2s ease;
+  //outline: 3px solid red;
+}
+.mode-card {
+  position: relative;
+}
+
+.mode-text {
+  position: absolute;
+  
+  left: 50%;
+  top: 45%;
+  
+  transform: translate(-50%, -50%);
+  
+  width: 52%;
+  
+  color: white;
+  font-family:
+    "PixelMplus10",
+    "ＭＳ ゴシック",
+    monospace;
+  
+  font-size: clamp(18px, 5vw, 50px);
+  text-align: center;
+  line-height: 1.5;
+  
+  z-index: 2;
+}
+.mode-text {
+  pointer-events: none;
+}
+.mode-text .small-text {
+  font-size: 0.8em;
+}
+/*.mode-image img+img {
+  margin-left: clamp(-90px, -8vw, -40px);
+}*/
+.mode-card.image-selected {
+  transform: translateY(clamp(-10px, -2vh, -25px));
+}
+.mode-description h2 {
+  font-size: 32px;
+}
+
+
+.mode-description p {
+  font-size: 20px;
+}
+#currentModeIcon {
+  display: none;
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  z-index: 10;
+}
+
+#currentModeIcon {
+  display: none;
+  position: absolute;
+  left: clamp(15px, 4vw, 40px);
+  top: clamp(15px, 4vh, 40px);
+  z-index: 10;
+}
+
+#currentModeIcon img {
+  width: clamp(70px, 10vw, 120px);
+  height: auto;
+}
+
+.mode-image {
+  display: none;
+}
+
+/* モード選択中だけ表示 */
+.game-screen.mode-select-active .mode-image {
+  display: flex;
+}
+
+@media (max-width:600px) {
+  
+  .mode-card:first-child img {
+    margin-right: -60px;
+  }
+  
+  .mode-card:last-child img {
+    margin-left: 0px;
+  }
+  
+  .mode-card:first-child .mode-text {
+    left: 65%;
+  }
+  
+}
+/* ========================================
+   メインメニュー
+   背景 → キャラクター → 枠 → ウィンドウ
+======================================== */
+
+/* ========================================
+   キャラクター＋枠の全体領域
+======================================== */
+
+#frameArea {
+  display: none;
+  
+  position: absolute;
+  
+  left: 0;
+  top: 0;
+  
+  width: 100%;
+  height: 100%;
+  
+  pointer-events: none;
+  
+  z-index: 1;
+  
+  isolation: isolate;
+}
+/* メインメニューのときだけ表示 */
+
+.game-screen.main-menu-active #frameArea {
+  display: block;
+}
+
+
+/* ========================================
+   キャラクター
+======================================== */
+
+#menuOverlayImage {
+  position: absolute;
+  
+  left: 50%;
+  top: 35%;
+  
+  transform: translate(-50%, -50%);
+  
+  width: 100%;
+  height: 100%;
+  
+  z-index: 1;
+  
+  pointer-events: none;
+  
+  overflow: visible;
+}
+@media (max-width: 600px) {
+  #menuOverlayImage {
+    transform: translate(-50%, calc(-50% + 15px));
+  }
+}
+#menuOverlayImage img {
+  display: block;
+  
+  width: 100%;
+  height: 100%;
+  
+  object-fit: contain;
+  object-position: center;
+  
+  image-rendering: pixelated;
+}
+
+
+/* ========================================
+   枠
+======================================== */
+
+#frameOverlay {
+  position: absolute;
+  
+  left: 0;
+  top: 0;
+  
+  width: 100%;
+  height: 100%;
+  
+  z-index: 2;
+  
+  pointer-events: none;
+  
+  overflow: hidden;
+}
+
+
+#frameOverlay img {
+  display: block;
+  
+  width: 100%;
+  height: 100%;
+  
+  object-fit: contain;
+
+  
+  image-rendering: pixelated;
+}
+//#frameOverlay {background: rgba(255, 0, 0, 0.3);}
+/* ========================================
+   ウィンドウを最前面
+======================================== */
+
+.command-window {
+  position: relative;
+  
+  z-index: 3;
+}
+
+#visualArea {
+  position: absolute;
+  
+  left: 50%;
+  top: 50%;
+  
+  transform: translate(-50%, -50%);
+  
+  /*
+   * 1920×1080 = 16:9
+   * 画面が横長でも縦長でも、
+   * 必ず16:9の領域になる
+   */
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  
+  z-index: 1;
+  
+  /*
+   * この16:9領域から出た
+   * キャラクターを非表示にする
+   */
+  overflow: hidden;
+}
+#visualArea .background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#visualArea #frameOverlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+#visualArea #frameOverlay img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: pixelated;
+}
+
+/* ========================================
+   メインメニュー以外では
+   キャラクターと枠を非表示
+======================================== */
+
+#menuOverlayImage,
+#frameOverlay {
+  display: none;
+}
+
+
+/* ========================================
+   メインメニューになったら表示
+======================================== */
+
+.game-screen.main-menu-active #menuOverlayImage,
+.game-screen.main-menu-active #frameOverlay {
+  display: block;
+}
+
+/* =====================
+   スマホ用コマンドウィンドウ位置
+===================== */
+
+@media (max-width: 600px) {
+  
+  .command-window {
+    margin-bottom: clamp(5px, 10vh, 90px);
+  }
+  
+}
+
+@media (max-width: 600px) {
+  
+  #menuOverlayImage img {
+    width: 110％;
+    height: 110%;
+    margin: auto;
+  }
+  
+}
+
+
+/*.mode-image img {
+  outline: 5px solid red !important;
+
+/* ========================================
+   制作順序の絵まき
+======================================== */
+
+#pictureScrollScreen {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+
+  width: 100vw;
+  height: 100dvh;
+
+  background: #dfefff;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  z-index: 10000;
+
+  color: #000;
+
+  font-family:
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+
+/* =====================
+   上部メニュー
+===================== */
+
+.picture-scroll-tabs {
+
+  display: flex;
+
+  width: 100%;
+
+  height: 70px;
+
+  background: #8ed8f8;
+
+}
+
+
+/* =====================
+   左側 制作順序
+===================== */
+
+.picture-scroll-title {
+
+  width: 50%;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: flex-start;
+
+  gap: 10px;
+
+  padding-left: 0;
+
+  font-size: 26px;
+
+  font-weight: bold;
+
+  background: #35BAF3;
+
+  overflow: hidden;
+
+  border-bottom: 10px solid #569843;
+
+}
+
+
+.picture-scroll-title span {
+
+  white-space: nowrap;
+
+  position: relative;
+
+  z-index: 2;
+
+  margin-left: 5px;
+
+  flex-shrink: 1;
+
+}
+
+
+.picture-scroll-title img {
+
+  height: 45px;
+
+  width: auto;
+
+  display: block;
+
+  flex-shrink: 1;
+
+  max-width: 45%;
+
+  object-fit: contain;
+
+}
+
+
+/* =====================
+   右側タブ
+===================== */
+
+.picture-scroll-tab-buttons {
+
+  width: 50%;
+
+  display: flex;
+
+}
+
+
+/* =====================
+   タブ
+===================== */
+
+.picture-scroll-tab {
+
+  flex: 1;
+
+  border: none;
+
+  background: #35BAF3;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  border-bottom: 10px solid #569843;
+
+}
+
+
+.picture-scroll-tab.active {
+
+  background: #ff00aa;
+
+  color: white;
+
+  border-bottom: 10px solid #f0a;
+
+}
+
+
+/* =====================
+   内容全体
+===================== */
+
+.picture-scroll-contents {
+
+  width: 100%;
+
+  padding: 0;
+
+}
+
+
+/* =====================
+   各タブ内容
+===================== */
+
+.picture-scroll-content {
+
+  display: none;
+
+  width: 100%;
+
+  min-height: 400px;
+
+  padding: 0;
+
+  background: #dfefff;
+
+}
+
+
+.picture-scroll-content.active {
+
+  display: block;
+
+}
+
+
+/* =====================
+   PDF表示エリア
+===================== */
+
+#pictureScrollPDFViewer {
+
+  width: 100%;
+
+  background: #ffffff;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+}
+
+
+/* PDF各ページ */
+
+.picture-scroll-pdf-page {
+
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  margin: 0;
+
+  padding: 0;
+
+}
+
+
+/* =====================
+   タブ2の画像
+===================== */
+
+.picture-scroll-page-image {
+
+  max-width: 100%;
+
+  height: auto;
+
+  display: block;
+
+  margin: 0 auto;
+
+}
+
+
+/* =====================
+   戻るボタン
+===================== */
+
+#pictureScrollBackButton {
+
+  position: fixed;
+
+  right: 20px;
+
+  bottom: 20px;
+
+  padding: 12px 20px;
+
+  font-size: 18px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #000;
+
+  color: white;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.2);
+
+  z-index: 10001;
+
+}
+
+
+#pictureScrollBackButton:active {
+
+  transform: scale(0.95);
+
+}
+
+
+/* =====================
+   スマホ
+===================== */
+
+@media (max-width: 600px) {
+
+  .picture-scroll-tabs {
+
+    height: 60px;
+
+  }
+
+
+  .picture-scroll-title {
+
+    font-size: 18px;
+
+    padding-left: 0;
+
+    gap: 5px;
+
+    align-items: flex-end;
+
+  }
+
+
+  .picture-scroll-title img {
+
+    height: 42px;
+
+    width: auto;
+
+    max-width: 40%;
+
+    margin-bottom: -10px;
+
+  }
+
+
+  .picture-scroll-tab {
+
+    font-size: 18px;
+
+    padding: 15px 5px;
+
+  }
+
+
+  #pictureScrollBackButton {
+
+    right: 15px;
+
+    bottom: 15px;
+
+    padding: 10px 16px;
+
+    font-size: 16px;
+
+  }
+
+}
+/* ========================================
+   制作順序の絵巻き表示中
+   モード関連の画像を非表示
+======================================== */
+
+.game-screen.picture-scroll-active #beginnerIcon,
+.game-screen.picture-scroll-active #advancedIcon,
+.game-screen.picture-scroll-active #currentModeIcon,
+.game-screen.picture-scroll-active #menuOverlayImage,
+.game-screen.picture-scroll-active #frameOverlay,
+.game-screen.picture-scroll-active .mode-image {
+  display: none !important;
+}
