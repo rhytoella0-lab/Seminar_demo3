@@ -338,6 +338,8 @@ function selectItem(index) {
   playSelectSE();
 const page = item.dataset.page;
 
+alert("押したページ: " + page);
+  
 if (page === "beginnerExplanation") {
   
   if (currentMode === "advanced") {
