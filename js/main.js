@@ -339,6 +339,10 @@ function selectItem(index) {
 const page = item.dataset.page;
 
 alert("押したページ: " + page);
+alert(
+  "pagesにある項目:\n" +
+  Object.keys(pages).join("\n")
+);
   
 if (page === "beginnerExplanation") {
   
