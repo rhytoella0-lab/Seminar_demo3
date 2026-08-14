@@ -20,11 +20,72 @@ const beginnerIcon =
   document.getElementById("beginnerIcon");
 const advancedIcon =
   document.getElementById("advancedIcon");
+const otherModeImage =
+  document.getElementById("otherModeImage");
+const modeImage =
+  document.querySelector(".mode-image");
+
 const gameScreen =
   document.querySelector(".game-screen");
+  
+  const modeExplanationButton =
+  document.getElementById("modeExplanationButton");
+  // =====================
+// メインメニューのモードアイコンを開く
+// =====================
 
-document.addEventListener("pointerdown", () => {
+const currentModeIcon =
+  document.getElementById("currentModeIcon");
+
+otherModeImage.addEventListener("click", (event) => {
+  
+  // 親の currentModeIcon へクリックを伝えない
+  event.stopPropagation();
+  
+  console.log("別モード画像がクリックされました");
+  
+  // 現在のモードを反対のモードへ変更
+  if (currentMode === "beginner") {
+    
+    currentMode = "advanced";
+    
+    currentModeImage =
+      "images/for_difficult_book.png";
+    
+  } else if (currentMode === "advanced") {
+    
+    currentMode = "beginner";
+    
+    currentModeImage =
+      "images/for_beginner_book.png";
+    
+  }
+  
+  console.log("現在のモード:", currentMode);
+  console.log("現在のモード画像:", currentModeImage);
+  updateModeExplanationButton();
+showCurrentModeIcon();
+  
+  // 切り替えUIを閉じる
+  gameScreen.classList.remove("mode-switch-open");
+  
+});
+document.addEventListener("pointerdown", (event) => {
+  
   gameScreen.focus();
+  
+  // モード切り替えUIが開いている場合
+  if (gameScreen.classList.contains("mode-switch-open")) {
+    
+    // currentModeIconの中をクリックしていない場合
+    if (!currentModeIcon.contains(event.target)) {
+      
+      gameScreen.classList.remove("mode-switch-open");
+      
+    }
+    
+  }
+  
 });
 const pageContent =
   document.getElementById("pageContent");
@@ -36,6 +97,7 @@ let currentMode = "";
 let currentModeImage = "";
 let scrollData = [];
 let currentTab = 0;
+let isModeSwitcherOpen = false;
 // =====================
 // BGM（Web Audio API）
 // =====================
@@ -276,6 +338,15 @@ function selectItem(index) {
   playSelectSE();
 const page = item.dataset.page;
 
+if (page === "beginnerExplanation") {
+  
+  if (currentMode === "advanced") {
+    openPage("advancedExplanation");
+    return;
+  }
+  
+}
+
 setTimeout(() => {
   
   openPage(page);
@@ -481,12 +552,11 @@ function showModeSelect() {
   
   modeSelect.style.display = "block";
   
-  document.querySelector(".mode-image").style.display = "flex";
+  modeImage.style.display = "flex";
   
   modeMenu.style.display = "block";
   
-  document.querySelector(".game-screen")
-    .classList.add("mode-select-active");
+  gameScreen.classList.add("mode-select-active");
   
 }
 
@@ -589,20 +659,7 @@ modeMenuItems.forEach((item) => {
 
   playModeSelectSE();
     
-    modeSelect.style.display = "none";
-
-hideModeImage();
-
-modeMenu.style.display = "none";
-mainMenu.style.display = "block";
-
-mainMenu.classList.add("show");
-
-gameScreen.classList.add("main-menu-active");
-
-showMenuOverlayImage();
-    
-    keepFocus();
+    enterMainMenu();
     
   });
   
@@ -647,34 +704,19 @@ advancedIcon.addEventListener("mouseleave", () => {
 });
 
 beginnerIcon.addEventListener("click", () => {
-  
-  currentMode = "beginner";
-  
-  currentModeImage = "images/for_beginner_book.png";
-  
-  showCurrentModeIcon();
+      
+      currentMode = "beginner";
+      
+      currentModeImage = "images/for_beginner_book.png";
+      
+      updateModeExplanationButton();
+      
+      showCurrentModeIcon();
   
   modeSelectSE.currentTime = 0;
   modeSelectSE.play().catch(() => {});
   
-  modeSelect.style.display = "none";
-  
-  hideModeImage();
-  document.querySelector(".mode-image").style.display = "none";
-  gameScreen.classList.remove("mode-select-active"); // ←これを追加
-  
-  modeMenu.style.display = "none";
-  
-  mainMenu.style.display = "block";
-  
-  mainMenu.classList.add("show");
-  
-  gameScreen.classList.add("main-menu-active");
-  
-  
-  
-  keepFocus();
-  
+  enterMainMenu();
 });
 document.getElementById("advancedIcon")
   .addEventListener("click", () => {
@@ -683,34 +725,17 @@ document.getElementById("advancedIcon")
     
     currentModeImage = "images/for_difficult_book.png";
     
+    updateModeExplanationButton();
+    
     showCurrentModeIcon();
     
     changeModeCursor(1);
     
     playModeSelectSE();
-    
-    hideModeImage();
-    
-    document.querySelector(".mode-image").style.display = "none";
-    
-    modeSelect.style.display = "none";
-    
-    gameScreen.classList.remove("mode-select-active");
-    
-    modeMenu.style.display = "none";
-mainMenu.style.display = "block";
-
-mainMenu.classList.add("show");
-
-gameScreen.classList.add("main-menu-active");
-
-showMenuOverlayImage();
-
-keepFocus();
+  
+    enterMainMenu();
     
   });
-keepFocus();
-
 
 // =====================
 // ページ表示
@@ -735,6 +760,59 @@ pageContent.style.display = "block";
   
   return;
   
+}
+if (page === "modeExplanation") {
+  
+  pageContent.classList.add("active");
+  
+  pageContent.style.display = "block";
+  
+  mainMenu.style.display = "none";
+  
+  pageContent.innerHTML = `
+    <h1></h1>
+    <p></p>
+    <button class="back">戻る</button>
+  `;
+  
+  const title =
+    pageContent.querySelector("h1");
+  
+  const text =
+    pageContent.querySelector("p");
+  
+  title.textContent = "モード解説";
+  
+  if (currentMode === "beginner") {
+    
+    text.textContent = "入門版の解説です";
+    
+  } else if (currentMode === "advanced") {
+    
+    text.textContent = "応用版の解説です";
+    
+  }
+  
+  const back =
+    pageContent.querySelector(".back");
+  
+  back.addEventListener("click", () => {
+    
+    gameState = "menu";
+    
+    pageContent.style.display = "none";
+    
+    pageContent.classList.remove("active");
+    
+    mainMenu.style.display = "block";
+    
+    showMenuOverlayImage();
+    
+    isSelected = false;
+    
+  });
+  
+  return;
 }
   pageContent.classList.add("active");
   
@@ -796,24 +874,110 @@ setTimeout(() => {
 
 keepFocus();
 
+// =====================
+// メインメニューへ移動
+// =====================
 
+function enterMainMenu() {
+  
+  modeSelect.style.display = "none";
+  
+  hideModeImage();
+  
+  modeMenu.style.display = "none";
+  
+  mainMenu.style.display = "block";
+  
+  mainMenu.classList.add("show");
+  
+  gameScreen.classList.remove("mode-select-active");
+  
+  gameScreen.classList.add("main-menu-active");
+  
+  showMenuOverlayImage();
+  
+  keepFocus();
+  
+}
 // =====================
 // 現在モードアイコン表示
 // =====================
-function showCurrentModeIcon(){
-
-    const icon =
-        document.getElementById("currentModeIcon");
-
-    const image =
-        document.getElementById("currentModeImage");
-
-icon.style.display = "none";
-
-    image.src = currentModeImage;
-
-    icon.style.display = "block";
+function showCurrentModeIcon() {
+  
+  const icon =
+    document.getElementById("currentModeIcon");
+  
+  const image =
+    document.getElementById("currentModeImage");
+  
+  icon.style.display = "none";
+  
+  image.src = currentModeImage;
+  
+  // 選ばれていない方の画像を設定
+  if (currentMode === "beginner") {
+    
+    otherModeImage.src =
+      "images/for_difficult_book.png";
+    
+  }
+  
+  if (currentMode === "advanced") {
+    
+    otherModeImage.src =
+      "images/for_beginner_book.png";
+    
+  }
+  
+  // 最初は閉じた状態にする
+  gameScreen.classList.remove(
+    "mode-switch-open"
+  );
+  
+  icon.style.display = "block";
 }
+function updateModeExplanationButton() {
+  
+  if (currentMode === "beginner") {
+    
+    modeExplanationButton.textContent =
+      "入門版解説";
+    
+  }
+  
+  if (currentMode === "advanced") {
+    
+    modeExplanationButton.textContent =
+      "応用版解説";
+    
+  }
+  
+}
+
+currentModeIcon.addEventListener("click", () => {
+  
+  // 開いている場合
+  if (isModeSwitcherOpen) {
+    
+    // 左へ戻す
+    gameScreen.classList.remove("mode-switch-open");
+    
+    isModeSwitcherOpen = false;
+    
+    console.log("モード切替UI: 閉じる");
+    
+    return;
+  }
+  
+  
+  // 閉じている場合
+  gameScreen.classList.add("mode-switch-open");
+  
+  isModeSwitcherOpen = true;
+  
+  console.log("モード切替UI: 開く");
+  
+});
 startMessage.addEventListener("click", () => {
   
   selectSE.currentTime = 0;
