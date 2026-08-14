@@ -338,10 +338,13 @@ function selectItem(index) {
   playSelectSE();
 const page = item.dataset.page;
 
-alert("押したページ: " + page);
 alert(
+  "押したページ: " + page +
+  "\n\n" +
   "pagesにある項目:\n" +
-  Object.keys(pages).join("\n")
+  (pages
+    ? Object.keys(pages).join("\n")
+    : "pages が undefined です")
 );
   
 if (page === "beginnerExplanation") {
