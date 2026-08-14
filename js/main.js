@@ -26,7 +26,9 @@ const modeImage =
 
 const gameScreen =
   document.querySelector(".game-screen");
-  
+
+gameScreen.classList.add("welcome-active");
+
   const modeExplanationButton =
   document.getElementById("modeExplanationButton");
   // =====================
@@ -734,7 +736,6 @@ document.getElementById("advancedIcon")
     enterMainMenu();
     
   });
-
 // =====================
 // ページ表示
 // =====================
@@ -743,29 +744,193 @@ function openPage(page) {
   
   gameState = "page";
   
-  console.log("openPage実行", page)
+  console.log("openPage実行:", page);
+  
+// =====================
+// ゲーム画面の状態をリセット
+// =====================
+
+gameScreen.classList.remove("welcome-active");
+gameScreen.classList.remove("game-start-active");
+gameScreen.classList.remove("game-start-fade");
+gameScreen.classList.remove("main-menu-active");
+gameScreen.classList.remove("mode-select-active");
+gameScreen.classList.remove("picture-scroll-active");
+gameScreen.classList.remove("mode-switch-open");
+
+isModeSwitcherOpen = false;
+  
+  // =====================
+  // メインメニューのキャラクターを消す
+  // =====================
+  
+  hideMenuOverlayImage();
+  
+  
+  // =====================
+  // モードアイコンをいったん消す
+  // =====================
+  
+  currentModeIcon.style.display = "none";
+  otherModeImage.style.display = "none";
+  
+  
+  // =====================
+  // モード選択・メインメニューを隠す
+  // =====================
   
   modeSelect.style.display = "none";
-  
   mainMenu.style.display = "none";
-hideMenuOverlayImage();
+  
+// ==================================================
+// ゲームスタート
+// ==================================================
 
-pageContent.style.display = "block";
+if (page === "try") {
   
-  if (page === "pictureScroll") {
+  // ゲームスタート背景にする
+  gameScreen.classList.add("game-start-active");
   
-  openPictureScroll();
+  // 背景フェード開始
+  gameScreen.classList.add("game-start-fade");
+  
+  
+  // ウィンドウの中身を作る
+  pageContent.innerHTML = `
+    <h1></h1>
+    <p></p>
+    <button class="back">戻る</button>
+  `;
+  
+  
+  // ウィンドウは最初は非表示
+  pageContent.style.display = "block";
+  pageContent.classList.remove("active");
+  
+  
+  const title =
+    pageContent.querySelector("h1");
+  
+  const text =
+    pageContent.querySelector("p");
+  
+  const back =
+    pageContent.querySelector(".back");
+  
+  
+  // 文字はまだ表示しない
+  title.textContent = "";
+  text.textContent = "";
+  
+  
+  // 戻るボタン
+  back.addEventListener("click", () => {
+    
+    enterMainMenu();
+    
+  });
+  
+  
+  // 2秒後に文字の表示を開始
+  setTimeout(() => {
+    
+    pageContent.classList.add("active");
+    
+    keepFocus();
+    
+    
+    // ウィンドウが表示されてから文字を打ち込む
+    title.textContent = pages[page].title;
+    
+    typeWriter(
+      text,
+      pages[page].text,
+      50
+    );
+    
+  }, 2000);
+  
   
   return;
   
 }
-if (page === "modeExplanation") {
+  // ==================================================
+  // 絵まきページ
+  // ==================================================
+  
+  if (page === "pictureScroll") {
+    
+    openPictureScroll();
+    
+    return;
+    
+  }
+  
+  
+  // ==================================================
+  // モード解説
+  // ==================================================
+  
+  if (page === "modeExplanation") {
+    
+    pageContent.classList.add("active");
+    
+    pageContent.style.display = "block";
+    
+    mainMenu.style.display = "none";
+    
+    pageContent.innerHTML = `
+      <h1></h1>
+      <p></p>
+      <button class="back">戻る</button>
+    `;
+    
+    
+    const title =
+      pageContent.querySelector("h1");
+    
+    const text =
+      pageContent.querySelector("p");
+    
+    
+    title.textContent = "モード解説";
+    
+    
+    if (currentMode === "beginner") {
+      
+      text.textContent = "入門版の解説です";
+      
+    } else if (currentMode === "advanced") {
+      
+      text.textContent = "応用版の解説です";
+      
+    }
+    
+    
+    const back =
+      pageContent.querySelector(".back");
+    
+    
+    back.addEventListener("click", () => {
+      
+      enterMainMenu();
+      
+    });
+    
+    
+    return;
+    
+  }
+  
+  
+  // ==================================================
+  // 通常ページ
+  // ==================================================
   
   pageContent.classList.add("active");
   
   pageContent.style.display = "block";
   
-  mainMenu.style.display = "none";
   
   pageContent.innerHTML = `
     <h1></h1>
@@ -773,52 +938,6 @@ if (page === "modeExplanation") {
     <button class="back">戻る</button>
   `;
   
-  const title =
-    pageContent.querySelector("h1");
-  
-  const text =
-    pageContent.querySelector("p");
-  
-  title.textContent = "モード解説";
-  
-  if (currentMode === "beginner") {
-    
-    text.textContent = "入門版の解説です";
-    
-  } else if (currentMode === "advanced") {
-    
-    text.textContent = "応用版の解説です";
-    
-  }
-  
-  const back =
-    pageContent.querySelector(".back");
-  
-  back.addEventListener("click", () => {
-    
-    gameState = "menu";
-    
-    pageContent.style.display = "none";
-    
-    pageContent.classList.remove("active");
-    
-    mainMenu.style.display = "block";
-    
-    showMenuOverlayImage();
-    
-    isSelected = false;
-    
-  });
-  
-  return;
-}
-  pageContent.classList.add("active");
-  
-  pageContent.innerHTML = `
-    <h1></h1>
-    <p></p>
-    <button class="back">戻る</button>
-  `;
   
   const title =
     pageContent.querySelector("h1");
@@ -826,57 +945,53 @@ if (page === "modeExplanation") {
   const text =
     pageContent.querySelector("p");
   
- // タイトルは最初から表示
-
-title.textContent = pages[page].title;
-
-
-// 本文だけ一文字ずつ表示
-
-typeWriter(
-  text,
-  pages[page].text,
-  50
-);
-
-setTimeout(() => {
-  keepFocus();
-}, 50);
+  
+  // タイトルは最初から表示
+  
+  title.textContent = pages[page].title;
+  
+  
+  // 本文だけ一文字ずつ表示
+  
+  typeWriter(
+    text,
+    pages[page].text,
+    50
+  );
+  
+  
+  setTimeout(() => {
+    
+    keepFocus();
+    
+  }, 50);
+  
   
   const back =
     pageContent.querySelector(".back");
   
-  back.addEventListener("click", () => {
-      gameState = "menu";
-      pageContent.style.display = "none";
-      
-      pageContent.classList.remove("active");
-      
-      mainMenu.style.display = "block";
-      
-      showMenuOverlayImage();
   
-  menuItems.forEach((item) => {
+  back.addEventListener("click", () => {
     
-    item.classList.remove("pressed");
+    enterMainMenu();
     
   });
   
- isSelected = false;
-
-setTimeout(() => {
-  keepFocus();
-}, 50);
-});
 }
 
 keepFocus();
 
 // =====================
-// メインメニューへ移動
+// メインメニューへ戻る
 // =====================
 
 function enterMainMenu() {
+  
+  console.log("メインメニューへ戻ります");
+  
+  // ---------------------
+  // 表示状態
+  // ---------------------
   
   modeSelect.style.display = "none";
   
@@ -884,17 +999,70 @@ function enterMainMenu() {
   
   modeMenu.style.display = "none";
   
+  pageContent.style.display = "none";
+  
   mainMenu.style.display = "block";
   
   mainMenu.classList.add("show");
   
+  
+  // ---------------------
+  // ゲーム画面の状態を完全にリセット
+  // ---------------------
+  
+  gameState = "menu";
+  
+  gameScreen.classList.remove("welcome-active");
+  
+  gameScreen.classList.remove("game-start-active");
+  
   gameScreen.classList.remove("mode-select-active");
+  
+  gameScreen.classList.remove("picture-scroll-active");
+  
+  gameScreen.classList.remove("mode-switch-open");
+  
+  
+  // ---------------------
+  // メインメニュー用の背景
+  // ---------------------
   
   gameScreen.classList.add("main-menu-active");
   
+  
+  // ---------------------
+  // メインメニュー用キャラクター画像
+  // ---------------------
+  
   showMenuOverlayImage();
   
-  keepFocus();
+  
+  // メインメニューに戻ったらモードアイコンを表示
+currentModeIcon.style.display = "block";
+otherModeImage.style.display = "";
+  
+  // ---------------------
+  // 選択状態をリセット
+  // ---------------------
+  
+  menuItems.forEach((item) => {
+    
+    item.classList.remove("pressed");
+    
+  });
+  
+  isSelected = false;
+  
+  
+  // ---------------------
+  // フォーカス
+  // ---------------------
+  
+  setTimeout(() => {
+    
+    keepFocus();
+    
+  }, 50);
   
 }
 // =====================
@@ -985,8 +1153,10 @@ startMessage.addEventListener("click", () => {
   startBGM();
   
   startMessage.style.display = "none";
-  
-  showModeSelect();
+
+gameScreen.classList.remove("welcome-active");
+
+showModeSelect();
   
   setTimeout(() => {
     keepFocus();
@@ -1219,48 +1389,11 @@ function openPictureScroll() {
       "pictureScrollBackButton"
     );
   
-  
   back.addEventListener("click", () => {
-    
-    gameState = "menu";
-    
-    gameScreen.classList.remove("picture-scroll-active");
-    
-    pageContent.style.display =
-      "none";
-    
-    pageContent.classList.remove(
-      "active"
-    );
-    
-    mainMenu.style.display =
-      "block";
-    
-    mainMenu.classList.add("show");
-    
-    showMenuOverlayImage();
-    
-    menuItems.forEach((item) => {
-      
-      item.classList.remove(
-        "pressed"
-      );
-      
-    });
-    
-    
-    isSelected = false;
-    
-    
-    setTimeout(() => {
-      
-      keepFocus();
-      
-    }, 50);
-    
-  });
   
+  enterMainMenu();
   
+});
   // =====================
   // 最初にPDFを読み込む
   // =====================
