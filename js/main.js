@@ -5,10 +5,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.54/pdf.worker.min.mjs";
 console.log("window.pages:", window.pages);
 const pages = window.pages;
-alert(
-  "window.pages は " +
-  (window.pages === undefined ? "undefined" : "存在します")
-);
 const menuItems = document.querySelectorAll("#mainMenu li");
 const commandWindow =
   document.querySelector(".command-window");
@@ -340,11 +336,6 @@ function selectItem(index) {
   
   playSelectSE();
 const page = item.dataset.page;
-alert("押したページ: " + page);
-alert(
-  "pagesにある項目:\n" +
-  Object.keys(pages).join("\n")
-);
 if (page === "beginnerExplanation") {
   
   if (currentMode === "advanced") {
@@ -1435,15 +1426,3 @@ async function loadPictureScrollPDF() {
   }
 
 }
-window.addEventListener("error", (event) => {
-  alert(
-    "JavaScriptエラー\n\n" +
-    event.message +
-    "\n\n" +
-    event.filename +
-    "\n" +
-    event.lineno +
-    ":" +
-    event.colno
-  );
-});
