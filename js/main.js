@@ -1427,4 +1427,17 @@ async function loadPictureScrollPDF() {
 
   }
 
+  window.addEventListener("error", (event) => {
+  alert(
+    "JavaScriptエラー\n\n" +
+    event.message +
+    "\n\n" +
+    event.filename +
+    "\n" +
+    event.lineno +
+    ":" +
+    event.colno
+  );
+});
+
 }
