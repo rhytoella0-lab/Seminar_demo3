@@ -1319,3 +1319,85 @@ min-height: 200px;
 
   z-index: 1;
 }
+.game-screen.welcome-active .background {
+  background-image: url("../images/welcom-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.game-screen.game-start-active .background {
+  background-image: url("../images/game-start-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* =========================
+   ゲームスタート演出
+   ========================= */
+
+/* ゲームスタートのウィンドウ */
+.game-screen.game-start-fade .command-window {
+  opacity: 0;
+  animation: gameStartWindowFade 0.8s ease forwards;
+  animation-delay: 2s;
+}
+
+
+/* ウィンドウが徐々に現れる */
+@keyframes gameStartWindowFade {
+  
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* =================================
+   ゲームスタート：背景フェード
+================================= */
+
+.game-screen.game-start-active {
+  position: relative;
+}
+
+
+/* 黒い幕 */
+.game-screen.game-start-fade::before {
+  content: "";
+  
+  position: absolute;
+  
+  inset: 0;
+  
+  background: #000;
+  
+  z-index: 5;
+  
+  pointer-events: none;
+  
+  animation: gameStartFadeOut 2s ease forwards;
+}
+
+
+/* 黒い幕が徐々に消える */
+@keyframes gameStartFadeOut {
+  
+  from {
+    opacity: 1;
+  }
+  
+  to {
+    opacity: 0;
+  }
+}
+
+
+/* ゲームスタートのウィンドウを幕より前に出す */
+.game-screen.game-start-active #pageContent {
+  position: relative;
+  z-index: 10;
+}
