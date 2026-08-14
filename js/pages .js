@@ -1,3 +1,4 @@
+console.log("pages.js が読み込まれました");
 window.pages = {
   
   try: {
