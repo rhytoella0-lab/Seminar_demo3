@@ -1,4 +1,3 @@
-alert("pages.js が読み込まれました");
 window.pages = {
   
   try: {
