@@ -564,18 +564,6 @@ function showModeSelect() {
 // メインメニュー追加画像
 // =====================
 
-function showMenuOverlayImage() {
-  
-  gameScreen.classList.add("menu-image-active");
-  
-}
-
-function hideMenuOverlayImage() {
-  
-  gameScreen.classList.remove("menu-image-active");
-  
-}
-
 let modeCurrent = 0;
 
 
@@ -759,14 +747,7 @@ gameScreen.classList.remove("picture-scroll-active");
 gameScreen.classList.remove("mode-switch-open");
 
 isModeSwitcherOpen = false;
-  
-  // =====================
-  // メインメニューのキャラクターを消す
-  // =====================
-  
-  hideMenuOverlayImage();
-  
-  
+
   // =====================
   // モードアイコンをいったん消す
   // =====================
@@ -1028,14 +1009,6 @@ function enterMainMenu() {
   // ---------------------
   
   gameScreen.classList.add("main-menu-active");
-  
-  
-  // ---------------------
-  // メインメニュー用キャラクター画像
-  // ---------------------
-  
-  showMenuOverlayImage();
-  
   
   // メインメニューに戻ったらモードアイコンを表示
 currentModeIcon.style.display = "block";
