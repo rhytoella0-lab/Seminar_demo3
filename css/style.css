@@ -713,47 +713,6 @@ min-height: 200px;
 .game-screen.main-menu-active #frameArea {
   display: block;
 }
-
-
-/* ========================================
-   キャラクター
-======================================== */
-
-#menuOverlayImage {
-  position: absolute;
-  
-  left: 50%;
-  top: 35%;
-  
-  transform: translate(-50%, -50%);
-  
-  width: 100%;
-  height: 100%;
-  
-  z-index: 1;
-  
-  pointer-events: none;
-  
-  overflow: visible;
-}
-@media (max-width: 600px) {
-  #menuOverlayImage {
-    transform: translate(-50%, calc(-50% + 15px));
-  }
-}
-#menuOverlayImage img {
-  display: block;
-  
-  width: 100%;
-  height: 100%;
-  
-  object-fit: contain;
-  object-position: center;
-  
-  image-rendering: pixelated;
-}
-
-
 /* ========================================
    枠
 ======================================== */
@@ -850,8 +809,6 @@ min-height: 200px;
    メインメニュー以外では
    キャラクターと枠を非表示
 ======================================== */
-
-#menuOverlayImage,
 #frameOverlay {
   display: none;
 }
@@ -860,8 +817,6 @@ min-height: 200px;
 /* ========================================
    メインメニューになったら表示
 ======================================== */
-
-.game-screen.main-menu-active #menuOverlayImage,
 .game-screen.main-menu-active #frameOverlay {
   display: block;
 }
@@ -877,17 +832,6 @@ min-height: 200px;
   }
   
 }
-
-@media (max-width: 600px) {
-  
-  #menuOverlayImage img {
-    width: 110%;
-    height: 110%;
-    margin: auto;
-  }
-  
-}
-
 
 /*.mode-image img {
   outline: 5px solid red !important;}
@@ -1248,7 +1192,6 @@ min-height: 200px;
 .game-screen.picture-scroll-active #beginnerIcon,
 .game-screen.picture-scroll-active #advancedIcon,
 .game-screen.picture-scroll-active #currentModeIcon,
-.game-screen.picture-scroll-active #menuOverlayImage,
 .game-screen.picture-scroll-active #frameOverlay,
 .game-screen.picture-scroll-active .mode-image {
   display: none !important;
