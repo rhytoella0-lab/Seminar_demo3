@@ -2,7 +2,7 @@ window.pages = {
   
   try: {
     title: "わたしたちの経験から",
-    text: "熱量などを書くページです."
+    text: "RPG風に学生がどのように動くのかを示すページです."
   },
   
   things: {
@@ -21,13 +21,13 @@ window.pages = {
   },
   
   beginnerExplanation: {
-    title: "入門版の解説です",
-    text: "ここに入門版の解説内容を書きます。"
+    title: "コクヨ版の解説です",
+    text: "文字をベースに図画を含めた解説。"
   },
   
   advancedExplanation: {
-    title: "応用版の解説です",
-    text: "ここに応用版の解説内容を書きます。"
+    title: "その他版の解説です",
+    text: "文字をベースに図画を含めた解説。"
   }
   
 };
