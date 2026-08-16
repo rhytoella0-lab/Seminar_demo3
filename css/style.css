@@ -950,48 +950,46 @@ body {
   background: #8ed8f8;
 }
 
-
 /* ========================================
    左側タイトル
 ======================================== */
 
 .picture-scroll-title {
-
+  
   width: 50%;
-
+  
   min-width: 0;
-
+  
   /*
-   * 左側タイトル領域自身を
-   * 文字サイズの基準にする
+   * この領域自身を
+   * container query の基準にする
    */
   container-type: inline-size;
-
+  
   display: flex;
-
+  
   align-items: flex-end;
-
+  
   justify-content: flex-start;
-
+  
   gap: clamp(3px, 0.5cqw, 10px);
-
+  
   padding-left: 0;
-
+  
   /*
-   * タイトル領域の幅に合わせて変化
+   * タイトル領域の幅に応じて変化
    *
-   * 最小14px
-   * 通常は領域幅の2.7%
-   * 最大26px
+   * 広い → 大きく
+   * 狭い → 小さく
    */
-  font-size: clamp(14px, 2.7cqw, 26px);
-
+  font-size: clamp(11px, 2.7cqw, 26px);
+  
   font-weight: bold;
-
+  
   background: #35BAF3;
-
+  
   overflow: hidden;
-
+  
   border-bottom: 10px solid #569843;
 }
 
@@ -1001,21 +999,28 @@ body {
 ======================================== */
 
 .picture-scroll-title span {
-
+  
   white-space: nowrap;
-
+  
   position: relative;
-
+  
   z-index: 2;
-
+  
   margin-left: clamp(2px, 0.25cqw, 5px);
-
+  
   /*
-   * 文字側は余った幅を使う
+   * 文字側も必要に応じて縮む
    */
   min-width: 0;
-
-  flex: 1;
+  
+  flex: 1 1 auto;
+  
+  /*
+   * 文字が画像に押されすぎないようにする
+   */
+  overflow: hidden;
+  
+  text-overflow: clip;
 }
 
 
@@ -1024,31 +1029,38 @@ body {
 ======================================== */
 
 .picture-scroll-title img {
-
+  
   /*
-   * バナーの高さに合わせる
+   * 高さをタイトル領域に合わせる
    */
-  height: clamp(30px, 4cqw, 45px);
-
+  height: clamp(22px, 4cqw, 45px);
+  
   width: auto;
-
+  
   display: block;
-
+  
   /*
-   * 十分なスペースがある場合は
-   * flexによって勝手に縮まない
+   * 横幅が足りないときだけ縮む
+   *
+   * 十分なスペースがあるときは
+   * 必要以上に小さくならない
    */
-  flex-shrink: 0;
-
+  flex: 0 1 auto;
+  
   /*
-   * タイトル領域の40%を超えない
+   * タイトル領域の40%を上限
    */
   max-width: 40%;
-
+  
+  /*
+   * 最小サイズを決める
+   */
+  min-width: 0;
+  
   object-fit: contain;
+  
+  flex-shrink: 1;
 }
-
-
 /* ========================================
    右側タブ
 ======================================== */
@@ -1068,53 +1080,52 @@ body {
   container-type: inline-size;
 }
 
-
 /* ========================================
    タブ
 ======================================== */
 
 .picture-scroll-tab {
-
+  
   flex: 1;
-
+  
   min-width: 0;
-
+  
   border: none;
-
+  
   background: #35BAF3;
-
+  
   color: #000;
-
+  
   cursor: pointer;
-
+  
   /*
-   * タブ領域の幅に合わせて変化
+   * 右側タブ領域の幅に合わせて文字を拡大縮小
    *
-   * 最小14px
-   * 通常は領域幅の2.3%
-   * 最大22px
+   * 狭い画面
+   * → 小さくなる
+   *
+   * 十分に広い画面
+   * → 22pxで頭打ちにせず、大きくなる
    */
-  font-size: clamp(14px, 2.3cqw, 22px);
-
+  font-size: clamp(14px, 2.3cqw, 40px);
+  
   /*
    * 横方向の余白
    */
   padding: 0 clamp(2px, 0.5cqw, 10px);
-
+  
   /*
    * 縦方向に収める
    */
   line-height: 1.2;
-
+  
   border-bottom: 10px solid #569843;
-
+  
   /*
    * 改行させない
    */
   white-space: nowrap;
 }
-
-
 /* ========================================
    選択中のタブ
 ======================================== */
