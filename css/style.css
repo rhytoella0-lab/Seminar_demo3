@@ -897,7 +897,8 @@ body {
 }
 
 /* ========================================
-   制作順序の絵まき
+   制作順序の絵巻
+   ※ここは16:9にしない
 ======================================== */
 
 #pictureScrollScreen {
@@ -922,12 +923,18 @@ body {
     "Helvetica Neue",
     Arial,
     sans-serif;
+
+  /*
+   * 絵巻画面自身を
+   * container query の基準にする
+   */
+  container-type: inline-size;
 }
 
 
-/* =====================
-   上部メニュー
-===================== */
+/* ========================================
+   絵巻：上部バナー
+======================================== */
 
 .picture-scroll-tabs {
 
@@ -935,20 +942,30 @@ body {
 
   width: 100%;
 
-  height: 70px;
+  /*
+   * バナー全体の高さ
+   */
+  height: clamp(50px, 4.2cqw, 70px);
 
   background: #8ed8f8;
-
 }
 
 
-/* =====================
-   左側 制作順序
-===================== */
+/* ========================================
+   左側タイトル
+======================================== */
 
 .picture-scroll-title {
 
   width: 50%;
+
+  min-width: 0;
+
+  /*
+   * 左側タイトル領域自身を
+   * 文字サイズの基準にする
+   */
+  container-type: inline-size;
 
   display: flex;
 
@@ -956,11 +973,18 @@ body {
 
   justify-content: flex-start;
 
-  gap: 10px;
+  gap: clamp(3px, 0.5cqw, 10px);
 
   padding-left: 0;
 
-  font-size: 26px;
+  /*
+   * タイトル領域の幅に合わせて変化
+   *
+   * 最小14px
+   * 通常は領域幅の2.7%
+   * 最大26px
+   */
+  font-size: clamp(14px, 2.7cqw, 26px);
 
   font-weight: bold;
 
@@ -969,9 +993,12 @@ body {
   overflow: hidden;
 
   border-bottom: 10px solid #569843;
-
 }
 
+
+/* ========================================
+   左側タイトル文字
+======================================== */
 
 .picture-scroll-title span {
 
@@ -981,69 +1008,116 @@ body {
 
   z-index: 2;
 
-  margin-left: 5px;
+  margin-left: clamp(2px, 0.25cqw, 5px);
 
-  flex-shrink: 1;
+  /*
+   * 文字側は余った幅を使う
+   */
+  min-width: 0;
 
+  flex: 1;
 }
 
 
+/* ========================================
+   左側タイトル画像
+======================================== */
+
 .picture-scroll-title img {
 
-  height: 45px;
+  /*
+   * バナーの高さに合わせる
+   */
+  height: clamp(30px, 4cqw, 45px);
 
   width: auto;
 
   display: block;
 
-  flex-shrink: 1;
+  /*
+   * 十分なスペースがある場合は
+   * flexによって勝手に縮まない
+   */
+  flex-shrink: 0;
 
-  max-width: 45%;
+  /*
+   * タイトル領域の40%を超えない
+   */
+  max-width: 40%;
 
   object-fit: contain;
-
 }
 
 
-/* =====================
+/* ========================================
    右側タブ
-===================== */
+======================================== */
 
 .picture-scroll-tab-buttons {
 
   width: 50%;
 
+  min-width: 0;
+
   display: flex;
 
+  /*
+   * 右側タブ領域自身を
+   * 文字サイズの基準にする
+   */
+  container-type: inline-size;
 }
 
 
-/* =====================
+/* ========================================
    タブ
-===================== */
-
-/* =====================
-   タブ
-===================== */
+======================================== */
 
 .picture-scroll-tab {
-  
+
   flex: 1;
-  
+
+  min-width: 0;
+
   border: none;
-  
+
   background: #35BAF3;
-  
+
   color: #000;
-  
-  font-size: 22px;
-  
+
   cursor: pointer;
-  
+
+  /*
+   * タブ領域の幅に合わせて変化
+   *
+   * 最小14px
+   * 通常は領域幅の2.3%
+   * 最大22px
+   */
+  font-size: clamp(14px, 2.3cqw, 22px);
+
+  /*
+   * 横方向の余白
+   */
+  padding: 0 clamp(2px, 0.5cqw, 10px);
+
+  /*
+   * 縦方向に収める
+   */
+  line-height: 1.2;
+
   border-bottom: 10px solid #569843;
-  
+
+  /*
+   * 改行させない
+   */
+  white-space: nowrap;
 }
 
+
+/* ========================================
+   選択中のタブ
+======================================== */
 
 .picture-scroll-tab.active {
 
@@ -1052,26 +1126,24 @@ body {
   color: white;
 
   border-bottom: 10px solid #f0a;
-
 }
 
 
-/* =====================
+/* ========================================
    内容全体
-===================== */
+======================================== */
 
 .picture-scroll-contents {
 
   width: 100%;
 
   padding: 0;
-
 }
 
 
-/* =====================
+/* ========================================
    各タブ内容
-===================== */
+======================================== */
 
 .picture-scroll-content {
 
@@ -1084,20 +1156,18 @@ body {
   padding: 0;
 
   background: #dfefff;
-
 }
 
 
 .picture-scroll-content.active {
 
   display: block;
-
 }
 
 
-/* =====================
+/* ========================================
    PDF表示エリア
-===================== */
+======================================== */
 
 #pictureScrollPDFViewer {
 
@@ -1110,11 +1180,12 @@ body {
   flex-direction: column;
 
   align-items: center;
-
 }
 
 
-/* PDF各ページ */
+/* ========================================
+   PDF各ページ
+======================================== */
 
 .picture-scroll-pdf-page {
 
@@ -1127,13 +1198,12 @@ body {
   margin: 0;
 
   padding: 0;
-
 }
 
 
-/* =====================
+/* ========================================
    タブ2の画像
-===================== */
+======================================== */
 
 .picture-scroll-page-image {
 
@@ -1144,13 +1214,12 @@ body {
   display: block;
 
   margin: 0 auto;
-
 }
 
 
-/* =====================
+/* ========================================
    戻るボタン
-===================== */
+======================================== */
 
 #pictureScrollBackButton {
 
@@ -1178,78 +1247,14 @@ body {
     0 3px 8px rgba(0, 0, 0, 0.2);
 
   z-index: 10001;
-
 }
 
 
 #pictureScrollBackButton:active {
 
   transform: scale(0.95);
-
 }
 
-
-/* =====================
-   スマホ
-===================== */
-
-@media (max-width: 600px) {
-
-  .picture-scroll-tabs {
-
-    height: 60px;
-
-  }
-
-
-  .picture-scroll-title {
-
-    font-size: 18px;
-
-    padding-left: 0;
-
-    gap: 5px;
-
-    align-items: flex-end;
-
-  }
-
-
-  .picture-scroll-title img {
-
-    height: 42px;
-
-    width: auto;
-
-    max-width: 40%;
-
-    margin-bottom: -10px;
-
-  }
-
-
-  .picture-scroll-tab {
-
-    font-size: 18px;
-
-    padding: 15px 5px;
-
-  }
-
-
-  #pictureScrollBackButton {
-
-    right: 15px;
-
-    bottom: 15px;
-
-    padding: 10px 16px;
-
-    font-size: 16px;
-
-  }
-
-}
 /* ========================================
    制作順序の絵巻き表示中
    モード関連の画像を非表示
