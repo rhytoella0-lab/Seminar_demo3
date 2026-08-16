@@ -585,6 +585,10 @@ body {
   
   z-index: 1;
 }
+/* ========================================
+   モード選択画像
+======================================== */
+
 .mode-image {
   position: absolute;
   
@@ -596,44 +600,93 @@ body {
   display: flex;
   
   flex-direction: row;
+  
   justify-content: center;
   align-items: center;
   
+  /*
+   * 画像2枚分を確実に確保
+   */
+  width: 90cqw;
+  
   gap: 0;
   
-  width: 82cqw;
-  
   z-index: 9999;
+  
   overflow: visible;
 }
 
 
-.mode-image img {
+/* ========================================
+   モード1枚分の領域
+======================================== */
+
+.mode-card {
+  
+  position: relative;
+  
+  /*
+   * 画像そのものと同じ幅に固定
+   *
+   * flexによる勝手な縮小を防ぐ
+   */
+  flex: 0 0 45cqw;
   
   width: 45cqw;
   
-  height: auto;
-  
-  object-fit: contain;
+  /*
+   * 子要素の基準をこのカードにする
+   */
+  overflow: visible;
+}
+
+
+/* ========================================
+   モード画像
+======================================== */
+
+.mode-card img {
   
   display: block;
   
+  width: 100%;
+  height: auto;
+  
+  /*
+   * 画像の本来の縦横比をそのまま維持
+   */
+  aspect-ratio: auto;
+  
+  object-fit: contain;
+  
   image-rendering: pixelated;
   
-  transition: transform 0.2s ease;
-}
-.mode-card {
-  position: relative;
+  /*
+   * flexによる縮小を完全に防ぐ
+   */
+  flex-shrink: 0;
 }
 
+
+/* ========================================
+   画像内の文字表示領域
+======================================== */
+
 .mode-text {
+  
   position: absolute;
   
+  /*
+   * カード＝画像と完全に同じ基準
+   */
   left: 50%;
-  top: 45%;
+  top: 48%;
   
   transform: translate(-50%, -50%);
   
+  /*
+   * 画像幅に対する割合
+   */
   width: 52%;
   
   color: white;
@@ -643,17 +696,21 @@ body {
     "ＭＳ ゴシック",
     monospace;
   
-  font-size: clamp(18px, 5cqw, 50px);
+  /*
+   * 文字サイズも画像幅に連動
+   */
+  font-size: 4cqw;
   
   text-align: center;
   
   line-height: 1.5;
   
   z-index: 2;
-}
-.mode-text {
+  
   pointer-events: none;
 }
+
+
 .mode-text .small-text {
   font-size: 0.8em;
 }
