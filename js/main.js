@@ -64,8 +64,14 @@ otherModeImage.addEventListener("click", (event) => {
   
   console.log("現在のモード:", currentMode);
   console.log("現在のモード画像:", currentModeImage);
+  
+  // ゲームスタートの文字を更新
+  updateGameStartLabel();
+  
+  // モード解説の文字を更新
   updateModeExplanationButton();
-showCurrentModeIcon();
+  
+  showCurrentModeIcon();
   
   // 切り替えUIを閉じる
   gameScreen.classList.remove("mode-switch-open");
@@ -632,20 +638,29 @@ modeMenuItems.forEach((item) => {
     
     currentMode = item.dataset.mode;
     
-        if (currentMode === "beginner") {
+    if (currentMode === "beginner") {
       
-      currentModeImage = "images/for_beginner_book.png";
+      currentModeImage =
+        "images/for_beginner_book.png";
       
     }
     
     if (currentMode === "advanced") {
       
-      currentModeImage = "images/for_difficult_book.png";
+      currentModeImage =
+        "images/for_difficult_book.png";
       
     }
+    
+    // ゲームスタートの文字を更新
+    updateGameStartLabel();
+    
+    // モード解説の文字も更新
+    updateModeExplanationButton();
+    
     showCurrentModeIcon();
-
-  playModeSelectSE();
+    
+    playModeSelectSE();
     
     enterMainMenu();
     
@@ -692,27 +707,38 @@ advancedIcon.addEventListener("mouseleave", () => {
 });
 
 beginnerIcon.addEventListener("click", () => {
-      
-      currentMode = "beginner";
-      
-      currentModeImage = "images/for_beginner_book.png";
-      
-      updateModeExplanationButton();
-      
-      showCurrentModeIcon();
+  
+  currentMode = "beginner";
+  
+  currentModeImage =
+    "images/for_beginner_book.png";
+  
+  // ゲームスタートの文字を更新
+  updateGameStartLabel();
+  
+  // モード解説の文字を更新
+  updateModeExplanationButton();
+  
+  showCurrentModeIcon();
   
   modeSelectSE.currentTime = 0;
   modeSelectSE.play().catch(() => {});
   
   enterMainMenu();
 });
+
 document.getElementById("advancedIcon")
   .addEventListener("click", () => {
     
     currentMode = "advanced";
     
-    currentModeImage = "images/for_difficult_book.png";
+    currentModeImage =
+      "images/for_difficult_book.png";
     
+    // ゲームスタートの文字を更新
+    updateGameStartLabel();
+    
+    // モード解説の文字を更新
     updateModeExplanationButton();
     
     showCurrentModeIcon();
@@ -720,7 +746,7 @@ document.getElementById("advancedIcon")
     changeModeCursor(1);
     
     playModeSelectSE();
-  
+    
     enterMainMenu();
     
   });
@@ -766,7 +792,6 @@ isModeSwitcherOpen = false;
 // ==================================================
 // ゲームスタート
 // ==================================================
-
 if (page === "try") {
   
   // ゲームスタート背景にする
@@ -784,7 +809,6 @@ if (page === "try") {
   `;
   
   
-  // ウィンドウは最初は非表示
   pageContent.style.display = "block";
   pageContent.classList.remove("active");
   
@@ -799,9 +823,16 @@ if (page === "try") {
     pageContent.querySelector(".back");
   
   
-  // 文字はまだ表示しない
-  title.textContent = "";
-  text.textContent = "";
+  // ========================================
+  // 最終的な文章を先に入れて
+  // ウィンドウの最終サイズを確定させる
+  // ========================================
+  
+  title.textContent = pages[page].title;
+  text.textContent = pages[page].text;
+  
+  title.style.visibility = "hidden";
+  text.style.visibility = "hidden";
   
   
   // 戻るボタン
@@ -812,16 +843,22 @@ if (page === "try") {
   });
   
   
-  // 2秒後に文字の表示を開始
+  // ========================================
+  // 2秒後に文字表示開始
+  // ========================================
+  
   setTimeout(() => {
     
     pageContent.classList.add("active");
     
     keepFocus();
     
+    // タイトルを表示
+    title.style.visibility = "visible";
     
-    // ウィンドウが表示されてから文字を打ち込む
-    title.textContent = pages[page].title;
+    // 本文をいったん空にしてから
+    // 文字打ち込み開始
+    text.style.visibility = "visible";
     
     typeWriter(
       text,
@@ -879,11 +916,11 @@ if (page === "try") {
     
     if (currentMode === "beginner") {
       
-      text.textContent = "入門版の解説です";
+      text.textContent = "コクヨ版の細かい解説です";
       
     } else if (currentMode === "advanced") {
       
-      text.textContent = "応用版の解説です";
+      text.textContent = "その他版の細かい解説です";
       
     }
     
@@ -1080,14 +1117,43 @@ function updateModeExplanationButton() {
   if (currentMode === "beginner") {
     
     modeExplanationButton.textContent =
-      "入門版解説";
+      "コクヨ版実際のやり方";
     
   }
   
   if (currentMode === "advanced") {
     
     modeExplanationButton.textContent =
-      "応用版解説";
+      "その他版実際のやり方";
+    
+  }
+  
+}
+
+// =====================
+// ゲームスタートの文字をモードに合わせて変更
+// =====================
+
+function updateGameStartLabel() {
+  
+  const gameStartItem =
+    document.querySelector('#mainMenu li[data-page="try"]');
+  
+  if (!gameStartItem) {
+    return;
+  }
+  
+  if (currentMode === "beginner") {
+    
+    gameStartItem.textContent =
+      "コクヨ版RPG風";
+    
+  }
+  
+  if (currentMode === "advanced") {
+    
+    gameStartItem.textContent =
+      "その他版RPG風";
     
   }
   
@@ -1160,7 +1226,7 @@ function openPictureScroll() {
 
       <div class="picture-scroll-tabs">
 
-        <!-- 左側：制作順序 -->
+        <!-- 左側：社会連携・熱意など -->
 
         <div class="picture-scroll-title">
 
@@ -1170,7 +1236,7 @@ function openPictureScroll() {
           >
 
           <span>
-            制作順序
+            社会連携・熱意など
           </span>
 
         </div>
@@ -1184,21 +1250,21 @@ function openPictureScroll() {
             class="picture-scroll-tab active"
             data-tab="pictureTab1"
           >
-            1
+            社会連携
           </button>
 
           <button
             class="picture-scroll-tab"
             data-tab="pictureTab2"
           >
-            2
+            熱意
           </button>
 
           <button
             class="picture-scroll-tab"
             data-tab="pictureTab3"
           >
-            3
+            その他？
           </button>
 
         </div>
