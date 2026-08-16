@@ -1,15 +1,21 @@
-/* 全体 */
+/* ========================================
+   全体
+======================================== */
 
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
-  
+  width: 100%;
+  height: 100%;
   margin: 0;
-  
+  padding: 0;
+}
+
+body {
   background: #000;
-  
   overflow: hidden;
   
   font-family:
@@ -17,24 +23,46 @@ body {
     "ＭＳ ゴシック",
     monospace;
   
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
+/* ========================================
+   ゲーム画面
+   常に16:9固定
+======================================== */
 
-/* ゲーム画面 */
 .game-screen {
-  width: 100vw;
-  height: 100dvh;
   position: relative;
+  
+  /*
+   * ブラウザの横幅・高さのうち、
+   * 16:9を維持したまま最大サイズにする
+   */
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  
+  aspect-ratio: 16 / 9;
+  
+  flex-shrink: 0;
+  
   display: flex;
+  
   justify-content: center;
   align-items: flex-end;
   
-  padding-bottom: 20px;
+  padding-bottom: 2cqh;
   
   outline: none;
+  
+  container-type: size;
+  
+  overflow: hidden;
+  
+  margin: 0 auto;
 }
-
 /* 背景 */
 
 .background {
@@ -59,26 +87,100 @@ body {
   background-repeat: no-repeat;
   background-color: #000;
 }
-/* コマンドウィンドウ */
+
+/* =====================
+   コマンドウィンドウ
+===================== */
+
 .command-window {
-  
   position: relative;
   
   z-index: 3;
   
-  width: 90%;
+  /*
+   * 画面横に少し余裕を残す
+   */
+  width: 86%;
   
-  max-width: 900px;
+  /*
+   * 中身の高さに合わせる
+   */
+  height: fit-content;
   
-  margin-bottom: clamp(20px, 12vh, 60px);
+  min-height: 0;
   
-  padding: 40px 50px;
+  /*
+   * 画面下から少し離す
+   */
+  margin-bottom: 5cqh;
+  
+  /*
+   * 枠と文字の間に余裕を作る
+   *
+   * 上下：4.5cqh
+   * 左右：4cqw
+   */
+  padding: 4.5cqh 4cqw;
   
   color: white;
   
   image-rendering: pixelated;
   
+  /*
+   * ::before / ::after の
+   * ドット枠を正しくこの要素基準にする
+   */
   isolation: isolate;
+  
+  overflow: visible;
+}
+/* =====================
+   コマンドウィンドウ
+===================== */
+#pageContent {
+  font-family:
+    "PixelMplus10",
+    "ＭＳ ゴシック",
+    monospace;
+  
+  color: white;
+  
+  font-size: 2.3cqw;
+  
+  line-height: 1.6;
+  
+  width: 100%;
+  
+  height: auto;
+  
+  max-height: none;
+  
+  overflow: visible;
+  
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+
+/* ページタイトル */
+
+#pageContent h1 {
+  margin: 0 0 2.5cqh 0;
+  
+  font-size: 3.0cqw;
+  
+  line-height: 1.4;
+}
+
+
+/* ページ本文 */
+
+#pageContent p {
+  margin: 0 0 2.5cqh 0;
+  
+  font-size: 2.3cqw;
+  
+  line-height: 1.7;
 }
 
 .game-screen.mode-select-active .command-window {
@@ -92,63 +194,59 @@ body {
 
 .command-window::before {
 
+  content: "";
 
-  content:"";
+  position: absolute;
 
+  inset: 0;
 
-  position:absolute;
+  background: white;
 
+  z-index: -1;
 
-  inset:0;
+  /*
+   * 1920px基準で
+   * 8px  = 0.4167cqw
+   * 16px = 0.8333cqw
+   * 24px = 1.25cqw
+   *
+   * ゲーム画面が小さくなると
+   * ドット枠も一緒に縮小する
+   */
 
+  clip-path: polygon(
 
-  background:white;
+    1.25cqw 0,
+    calc(100% - 1.25cqw) 0,
 
+    calc(100% - 1.25cqw) 0.4167cqw,
+    calc(100% - 0.8333cqw) 0.4167cqw,
+    calc(100% - 0.8333cqw) 0.8333cqw,
+    100% 0.8333cqw,
 
-  z-index:-1;
+    100% calc(100% - 0.8333cqw),
+    calc(100% - 0.8333cqw) calc(100% - 0.8333cqw),
+    calc(100% - 0.8333cqw) calc(100% - 0.4167cqw),
+    calc(100% - 1.25cqw) calc(100% - 0.4167cqw),
 
+    calc(100% - 1.25cqw) 100%,
 
+    1.25cqw 100%,
 
-  clip-path:polygon(
+    1.25cqw calc(100% - 0.4167cqw),
+    0.8333cqw calc(100% - 0.4167cqw),
+    0.8333cqw calc(100% - 0.8333cqw),
+    0 calc(100% - 0.8333cqw),
 
-    24px 0,
-    calc(100% - 24px) 0,
+    0 0.8333cqw,
 
+    0.8333cqw 0.8333cqw,
 
-    calc(100% - 24px) 8px,
-    calc(100% - 16px) 8px,
-    calc(100% - 16px) 16px,
-    100% 16px,
+    0.8333cqw 0.4167cqw,
 
-
-    100% calc(100% - 16px),
-    calc(100% - 16px) calc(100% - 16px),
-    calc(100% - 16px) calc(100% - 8px),
-    calc(100% - 24px) calc(100% - 8px),
-
-
-    calc(100% - 24px) 100%,
-
-
-    24px 100%,
-
-
-    24px calc(100% - 8px),
-    16px calc(100% - 8px),
-    16px calc(100% - 16px),
-    0 calc(100% - 16px),
-
-
-    0 16px,
-
-    16px 16px,
-
-    16px 8px,
-
-    24px 8px
+    1.25cqw 0.4167cqw
 
   );
-
 
 }
 
@@ -157,67 +255,51 @@ body {
 /* =====================
    内側黒部分
 ===================== */
-
-
 .command-window::after {
 
+  content: "";
 
-  content:"";
+  position: absolute;
 
+  inset: 0.4167cqw;
 
-  position:absolute;
+  background: #000;
 
+  z-index: -1;
 
-  inset:8px;
+  clip-path: polygon(
 
+    0.8333cqw 0,
+    calc(100% - 0.8333cqw) 0,
 
-  background:#000;
+    calc(100% - 0.8333cqw) 0.4167cqw,
+    calc(100% - 0.4167cqw) 0.4167cqw,
+    calc(100% - 0.4167cqw) 0.8333cqw,
+    100% 0.8333cqw,
 
+    100% calc(100% - 0.8333cqw),
+    calc(100% - 0.4167cqw) calc(100% - 0.8333cqw),
+    calc(100% - 0.4167cqw) calc(100% - 0.4167cqw),
+    calc(100% - 0.8333cqw) calc(100% - 0.4167cqw),
 
-  z-index:-1;
+    calc(100% - 0.8333cqw) 100%,
 
+    0.8333cqw 100%,
 
+    0.8333cqw calc(100% - 0.4167cqw),
+    0.4167cqw calc(100% - 0.4167cqw),
+    0.4167cqw calc(100% - 0.8333cqw),
+    0 calc(100% - 0.8333cqw),
 
-  clip-path:polygon(
+    0 0.8333cqw,
 
-    16px 0,
-    calc(100% - 16px) 0,
+    0.4167cqw 0.8333cqw,
 
+    0.4167cqw 0.4167cqw,
 
-    calc(100% - 16px) 8px,
-    calc(100% - 8px) 8px,
-    calc(100% - 8px) 16px,
-    100% 16px,
-
-
-    100% calc(100% - 16px),
-    calc(100% - 8px) calc(100% - 16px),
-    calc(100% - 8px) calc(100% - 8px),
-    calc(100% - 16px) calc(100% - 8px),
-
-
-    calc(100% - 16px) 100%,
-
-
-    16px 100%,
-
-
-    16px calc(100% - 8px),
-    8px calc(100% - 8px),
-    8px calc(100% - 16px),
-    0 calc(100% - 16px),
-
-
-    0 16px,
-
-    8px 16px,
-
-    8px 8px,
-
-    16px 8px
+    0.8333cqw 0.4167cqw
 
   );
-
 
 }
 
@@ -227,7 +309,6 @@ body {
 
 /* メニュー */
 .menu {
-  
   list-style: none;
   
   padding: 0;
@@ -236,29 +317,25 @@ body {
   
   color: white;
   
-  font-size: clamp(22px, 3.2vw, 34px);
+  font-size: 3.2cqw;
   
   line-height: 1.8;
   
   opacity: 0;
   
   display: none;
-  
 }
 /* 選択肢 */
-
 .menu li {
-  
   cursor: pointer;
   
   position: relative;
   
-  padding-left: 45px;
+  padding-left: 3cqw;
   
   transition: transform 0.1s;
   
   touch-action: none;
-  
 }
 
 /* カーソル */
@@ -321,18 +398,6 @@ body {
   color: #ffff80;
 }
 
-
-/* スマホ調整 */
-
-@media(max-width:600px) {
-  
-  .menu li {
-    
-    padding-left: 35px;
-    
-  }
-  
-}
 /* 決定時の押し込み演出 */
 
 .menu li.pressed {
@@ -369,15 +434,10 @@ body {
 }/* スタートメッセージ */
 
 #startMessage {
-
   color: white;
-
-  font-size: clamp(22px, 3.2vw, 34px);
-
+  font-size: 3.2cqw;
   line-height: 1.8;
-
   cursor: pointer;
-
 }
 /* =====================
    スタート文字
@@ -419,21 +479,15 @@ body {
 ===================== */
 
 .start-item {
-  
   color: white;
-  
   cursor: pointer;
   
-  font-size: clamp(22px, 3.2vw, 34px);
+  font-size: 3.2cqw;
   
   display: flex;
-  
   align-items: center;
-  
-  gap: 0px;
-  
+  gap: 0;
 }
-
 .start-item:hover {
   
   color: #ffff80;
@@ -474,11 +528,6 @@ body {
   
 }
 */
-#pageContent.active {
-  
-min-height: 200px;
-  
-}
 .hidden {
   display: none;
 }
@@ -508,26 +557,19 @@ min-height: 200px;
 
 
 .mode-description h2 {
-  
   margin: 0 0 10px;
-  
-  font-size: clamp(24px, 3vw, 36px);
-  
+  font-size: clamp(24px, 3cqw, 36px);
 }
 
-
 .mode-description p {
-  
   margin: 0;
-  
-  font-size: clamp(18px, 2.5vw, 28px);
-  
+  font-size: clamp(18px, 2.5cqw, 28px);
 }
 #modeInfo {
   
   position: absolute;
   
-  top: 50px;
+  top: 4cqh;
   
   left: 50%;
   
@@ -544,32 +586,31 @@ min-height: 200px;
   z-index: 1;
 }
 .mode-image {
-  
-  position: fixed;
+  position: absolute;
   
   left: 50%;
   top: 50%;
   
   transform: translate(-50%, -50%);
   
-  flex-direction: row;
+  display: flex;
   
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   
-  gap: 0px;
+  gap: 0;
   
-  width: 82vw;
+  width: 82cqw;
   
   z-index: 9999;
-  
   overflow: visible;
-  
 }
+
 
 .mode-image img {
   
-  width: clamp(240px, 45vw, 700px);
+  width: 45cqw;
   
   height: auto;
   
@@ -580,7 +621,6 @@ min-height: 200px;
   image-rendering: pixelated;
   
   transition: transform 0.2s ease;
-  /*outline: 3px solid red;*/
 }
 .mode-card {
   position: relative;
@@ -597,13 +637,16 @@ min-height: 200px;
   width: 52%;
   
   color: white;
+  
   font-family:
     "PixelMplus10",
     "ＭＳ ゴシック",
     monospace;
   
-  font-size: clamp(18px, 5vw, 50px);
+  font-size: clamp(18px, 5cqw, 50px);
+  
   text-align: center;
+  
   line-height: 1.5;
   
   z-index: 2;
@@ -618,7 +661,7 @@ min-height: 200px;
   margin-left: clamp(-90px, -8vw, -40px);
 }*/
 .mode-card.image-selected {
-  transform: translateY(clamp(-10px, -2vh, -25px));
+  transform: translateY(clamp(-10px, -2cqh, -25px));
 }
 
 
@@ -627,18 +670,18 @@ min-height: 200px;
   
   position: absolute;
   
-  left: clamp(15px, 4vw, 40px);
-  top: clamp(15px, 4vh, 40px);
+  left: clamp(15px, 4cqw, 40px);
+  top: clamp(15px, 4cqh, 40px);
   
   z-index: 10;
   
-  width: clamp(70px, 10vw, 120px);
+  width: clamp(70px, 10cqw, 120px);
   
   overflow: visible;
 }
 
 #currentModeIcon img {
-  width: clamp(70px, 10vw, 120px);
+  width: clamp(70px, 10cqw, 120px);
   height: auto;
   
   position: absolute;
@@ -667,21 +710,6 @@ min-height: 200px;
   display: flex;
 }
 
-@media (max-width:600px) {
-  
-  .mode-card:first-child img {
-    margin-right: -60px;
-  }
-  
-  .mode-card:last-child img {
-    margin-left: 0px;
-  }
-  
-  .mode-card:first-child .mode-text {
-    left: 65%;
-  }
-  
-}
 /* ========================================
    メインメニュー
    背景 → キャラクター → 枠 → ウィンドウ
@@ -749,29 +777,19 @@ min-height: 200px;
 /* ========================================
    ウィンドウを最前面
 ======================================== */
-
 #visualArea {
   position: absolute;
   
-  left: 50%;
-  top: 50%;
+  left: 0;
+  top: 0;
   
-  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
   
-  /*
-   * 1920×1080 = 16:9
-   * 画面が横長でも縦長でも、
-   * 必ず16:9の領域になる
-   */
-  width: min(100vw, calc(100dvh * 16 / 9));
-  height: min(100dvh, calc(100vw * 9 / 16));
+  transform: none;
   
   z-index: 1;
   
-  /*
-   * この16:9領域から出た
-   * キャラクターを非表示にする
-   */
   overflow: hidden;
 }
 #visualArea .background {
@@ -821,21 +839,6 @@ min-height: 200px;
   display: block;
 }
 
-/* =====================
-   スマホ用コマンドウィンドウ位置
-===================== */
-
-@media (max-width: 600px) {
-  
-  .command-window {
-    margin-bottom: clamp(5px, 10vh, 90px);
-  }
-  
-}
-
-/*.mode-image img {
-  outline: 5px solid red !important;}
-*/
 /* ========================================
    制作順序の絵まき
 ======================================== */
@@ -962,20 +965,26 @@ min-height: 200px;
    タブ
 ===================== */
 
+/* =====================
+   タブ
+===================== */
+
 .picture-scroll-tab {
-
+  
   flex: 1;
-
+  
   border: none;
-
+  
   background: #35BAF3;
-
+  
+  color: #000;
+  
   font-size: 22px;
-
+  
   cursor: pointer;
-
+  
   border-bottom: 10px solid #569843;
-
+  
 }
 
 
@@ -1214,11 +1223,11 @@ min-height: 200px;
 
 #otherModeImage {
   position: absolute;
-
+  
   left: -12px;
   top: 12px;
-
-  width: clamp(70px, 10vw, 120px);
+  
+  width: clamp(70px, 10cqw, 120px);
   height: auto;
 
   opacity: 1;
@@ -1252,7 +1261,7 @@ min-height: 200px;
    * 右へスライド
    */
   transform: translateX(
-    clamp(80px, 10vw, 160px)
+    clamp(80px, 10cqw, 160px)
   );
 
   /*
@@ -1343,4 +1352,136 @@ min-height: 200px;
 .game-screen.game-start-active #pageContent {
   position: relative;
   z-index: 10;
+}
+
+/* ========================================
+   通常ページ・ゲームスタート・モード解説
+   ゲーム画面の大きさに合わせて縮小
+======================================== */
+
+#pageContent {
+  font-family:
+    "PixelMplus10",
+    "ＭＳ ゴシック",
+    monospace;
+  
+  color: white;
+  
+  font-size: 2.7cqw;
+  
+  line-height: 1.6;
+  
+  width: 100%;
+  
+  height: auto;
+  
+  max-height: none;
+  
+  overflow: visible;
+  
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+/* ページタイトル */
+
+#pageContent h1 {
+  margin: 0 0 2cqh 0;
+  
+  font-size: 3.6cqw;
+  
+  line-height: 1.4;
+}
+
+
+/* ページ本文 */
+
+#pageContent p {
+  margin: 0 0 2cqh 0;
+  
+  font-size: 2.7cqw;
+  
+  line-height: 1.6;
+}
+
+/* ========================================
+   通常ページの戻るボタン
+======================================== */
+
+#pageContent .back {
+  
+  /* ブラウザ標準ボタンの見た目を消す */
+  appearance: none;
+  -webkit-appearance: none;
+  
+  font-family:
+    "PixelMplus10",
+    "ＭＳ ゴシック",
+    monospace;
+  
+  font-size: 2.0cqw;
+  
+  color: white;
+  
+  background: #222;
+  
+  border: none;
+  outline: none;
+  
+  border-radius: 6px;
+  
+  padding: 0.8cqh 2cqw;
+  
+  cursor: pointer;
+  
+  line-height: 1.4;
+  
+  box-shadow: none;
+  
+  transition:
+    transform 0.1s,
+    color 0.1s,
+    background 0.1s;
+}
+
+
+/* マウスを乗せたとき */
+
+#pageContent .back:hover {
+  
+  color: #ffff80;
+  
+  background: #333;
+  
+}
+
+
+/* キーボードなどでフォーカスされたとき */
+
+#pageContent .back:focus {
+  
+  outline: none;
+  
+  border: none;
+  
+  box-shadow: none;
+  
+}
+
+
+/* 押した瞬間 */
+
+#pageContent .back:active {
+  
+  transform: scale(0.9);
+  
+  color: #ffff80;
+  
+  background: #111;
+  
+  border: none;
+  
+  outline: none;
+  
+  box-shadow: none;
+  
 }
