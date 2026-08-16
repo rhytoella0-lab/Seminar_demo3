@@ -794,12 +794,18 @@ isModeSwitcherOpen = false;
 // ==================================================
 if (page === "try") {
   
+  // ゲームスタート演出を完全にリセット
+  gameScreen.classList.remove("game-start-active");
+  gameScreen.classList.remove("game-start-fade");
+  
+  // アニメーションを強制的にリセット
+  void gameScreen.offsetWidth;
+  
   // ゲームスタート背景にする
   gameScreen.classList.add("game-start-active");
   
   // 背景フェード開始
   gameScreen.classList.add("game-start-fade");
-  
   
   // ウィンドウの中身を作る
   pageContent.innerHTML = `
@@ -1031,10 +1037,11 @@ function enterMainMenu() {
   gameState = "menu";
   
   gameScreen.classList.remove("welcome-active");
-  
-  gameScreen.classList.remove("game-start-active");
-  
-  gameScreen.classList.remove("mode-select-active");
+
+gameScreen.classList.remove("game-start-active");
+gameScreen.classList.remove("game-start-fade");
+
+gameScreen.classList.remove("mode-select-active");
   
   gameScreen.classList.remove("picture-scroll-active");
   
